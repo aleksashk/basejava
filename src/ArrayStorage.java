@@ -6,10 +6,10 @@ import java.util.Objects;
  */
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
-    int size = 0;
+    private int size = 0;
 
     void clear() {
-        Arrays.fill(storage,0, size, null);
+        Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
@@ -27,24 +27,21 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-        int index = 0;
-        for (int i = 0; i < storage.length; i++) {
+        for (int i = 0; i < size; i++) {
             if (Objects.equals(storage[i].uuid, uuid)) {
-                index = i;
+                storage[i] = storage[size];
+                storage[size] = null;
                 size--;
                 break;
             }
         }
-        System.arraycopy(Arrays.copyOfRange(storage, 0, index), 0, storage, 0, Arrays.copyOfRange(storage, 0, index).length);
-        System.arraycopy(Arrays.copyOfRange(storage, index + 1, storage.length), 0, storage, index, Arrays.copyOfRange(storage, index + 1, storage.length).length);
     }
 
     /**
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        Resume[] result = new Resume[size];
-        System.arraycopy(storage, 0, result, 0, size);
+        Resume[] result = Arrays.copyOf(storage, size);;
         return result;
     }
 
