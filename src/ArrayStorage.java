@@ -6,18 +6,15 @@ import java.util.Objects;
  */
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
+    int size = 0;
 
     void clear() {
-        Arrays.fill(storage, null);
+        Arrays.fill(storage,0, size, null);
+        size = 0;
     }
 
     void save(Resume r) {
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] == null) {
-                storage[i] = r;
-                break;
-            }
-        }
+        storage[size++] = r;
     }
 
     Resume get(String uuid) {
@@ -34,32 +31,24 @@ public class ArrayStorage {
         for (int i = 0; i < storage.length; i++) {
             if (Objects.equals(storage[i].uuid, uuid)) {
                 index = i;
+                size--;
                 break;
             }
         }
-        Resume[] tmpArrayBefore = Arrays.copyOfRange(storage, 0, index);
-        Resume[] tmpArrayAfter = Arrays.copyOfRange(storage, index + 1, storage.length);
-        System.arraycopy(tmpArrayBefore, 0, storage, 0, tmpArrayBefore.length);
-        System.arraycopy(tmpArrayAfter, 0, storage, index, tmpArrayBefore.length);
+        System.arraycopy(Arrays.copyOfRange(storage, 0, index), 0, storage, 0, Arrays.copyOfRange(storage, 0, index).length);
+        System.arraycopy(Arrays.copyOfRange(storage, index + 1, storage.length), 0, storage, index, Arrays.copyOfRange(storage, index + 1, storage.length).length);
     }
 
     /**
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        int index;
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] == null) {
-                index = i;
-                Resume[] result = new Resume[index];
-                System.arraycopy(storage, 0, result, 0, result.length);
-                return result;
-            }
-        }
-        return new Resume[0];
+        Resume[] result = new Resume[size];
+        System.arraycopy(storage, 0, result, 0, size);
+        return result;
     }
 
     int size() {
-        return getAll().length;
+        return size;
     }
 }
