@@ -26,13 +26,11 @@ public class ArrayStorage {
     public void save(Resume r) {
         if (size == STORAGE_LIMIT) {
             System.out.println("Storage is full");
-            return;
-        }
-        if ((index = findIndex(r.uuid)) != -1) {
+        } else if ((index = findIndex(r.uuid)) != -1) {
             System.out.println("Resume with a uuid '" + r.uuid + "' is already in the storage.");
-            return;
+        } else {
+            storage[size++] = r;
         }
-        storage[size++] = r;
     }
 
     public void update(Resume r) {
