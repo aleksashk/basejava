@@ -4,11 +4,12 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    protected final Resume[] storage = new Resume[10000];
+    protected static final int STORAGE_LIMIT = 10000;
+    protected final Resume[] storage = new Resume[STORAGE_LIMIT];
     private int size = 0;
 
     public int findIndex(String uuid) {
-        for (int i = 0; i < storage.length; i++) {
+        for (int i = 0; i < STORAGE_LIMIT; i++) {
             if (storage[i].uuid.equals(uuid)) {
                 return i;
             }
@@ -22,7 +23,7 @@ public class ArrayStorage {
     }
 
     void save(Resume r) {
-        if (size == storage.length) {
+        if (size == STORAGE_LIMIT) {
             System.out.println("Storage is full");
             return;
         }
