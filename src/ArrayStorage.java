@@ -8,7 +8,7 @@ public class ArrayStorage {
     protected final Resume[] storage = new Resume[STORAGE_LIMIT];
     private int size = 0;
 
-    public int findIndex(String uuid) {
+    private int findIndex(String uuid) {
         for (int i = 0; i < STORAGE_LIMIT; i++) {
             if (storage[i].uuid.equals(uuid)) {
                 return i;
@@ -17,12 +17,12 @@ public class ArrayStorage {
         return -1;
     }
 
-    void clear() {
+    public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
-    void save(Resume r) {
+    public void save(Resume r) {
         if (size == STORAGE_LIMIT) {
             System.out.println("Storage is full");
             return;
@@ -34,7 +34,7 @@ public class ArrayStorage {
         storage[size++] = r;
     }
 
-    void update(Resume r) {
+    public void update(Resume r) {
         int index = findIndex(r.uuid);
         if (index == -1) {
             System.out.println("Resume with a uuid '" + r.uuid + "' isn't in the storage.");
@@ -43,7 +43,7 @@ public class ArrayStorage {
         storage[index] = r;
     }
 
-    void delete(String uuid) {
+    public void delete(String uuid) {
         int index = findIndex(uuid);
         if (index == -1) {
             System.out.println("Wrong uuid: " + uuid);
@@ -58,7 +58,7 @@ public class ArrayStorage {
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    Resume[] getAll() {
+    public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
     }
 
