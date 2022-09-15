@@ -10,7 +10,7 @@ public class ArrayStorage {
     private int index;
 
     private int findIndex(String uuid) {
-        for (int index = 0; index < STORAGE_LIMIT; index++) {
+        for (int index = 0; index < size; index++) {
             if (storage[index].uuid.equals(uuid)) {
                 return index;
             }
@@ -33,10 +33,9 @@ public class ArrayStorage {
         }
     }
 
-    public void update(Resume r) {
-        index = findIndex(r.uuid);
-        if (index == -1) {
-            System.out.println("Resume with a uuid '" + r.uuid + "' isn't in the storage.");
+    public void update(Resume r, int index) {
+        if (index == -1 || index >= size) {
+            System.out.println("Wrong index: " + index);
             return;
         }
         storage[index] = r;
@@ -52,6 +51,14 @@ public class ArrayStorage {
         size--;
         storage[index] = storage[size];
         storage[size] = null;
+    }
+
+    public Resume get(String uuid) {
+        int index;
+        if ((index = findIndex(uuid)) != -1) {
+            return storage[index];
+        }
+        return null;
     }
 
     /**
