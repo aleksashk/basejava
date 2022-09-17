@@ -7,10 +7,13 @@ import java.util.Arrays;
 /**
  * Array based storage for Resumes
  */
-public class ArrayStorage {
+public class ArrayStorage implements Storage{
+
     private static final int STORAGE_LIMIT = 10000;
+
     private final Resume[] storage = new Resume[STORAGE_LIMIT];
     private int size = 0;
+
     private int index;
 
     private int findIndex(String uuid) {
@@ -37,12 +40,13 @@ public class ArrayStorage {
         }
     }
 
-    public void update(Resume r, int index) {
-        if (index == -1 || index >= size) {
+    public void update(Resume r) {
+        int index = findIndex(r.getUuid());
+        if (index == -1) {
             System.out.println("Wrong index: " + index);
-            return;
+        }else {
+            storage[index] = r;
         }
-        storage[index] = r;
     }
 
     public void delete(String uuid) {
