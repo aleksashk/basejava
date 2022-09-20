@@ -16,18 +16,8 @@ public class ArrayStorage extends AbstractArrayStorage {
         return -1;
     }
 
-    public void save(Resume r) {
-        if (size == STORAGE_LIMIT) {
-            System.out.println("Storage is full");
-        } else if ((index = findIndex(r.getUuid())) != -1) {
-            System.out.println("Resume with a uuid '" + r.getUuid() + "' is already in the storage.");
-        } else {
-            storage[size++] = r;
-        }
-    }
-
     @Override
-    protected void correctArrayAfterAddElement(Resume r) {
+    protected void correctArrayAfterAddElement(Resume r, int index) {
         storage[size] = r;
     }
 

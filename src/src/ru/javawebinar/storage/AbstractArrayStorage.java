@@ -48,18 +48,19 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected abstract int findIndex(String uuid);
 
-    public void save(Resume r) {
+    public final void save(Resume r) {
         index = findIndex(r.getUuid());
         if (size == STORAGE_LIMIT) {
             System.out.println("Storage is full");
         } else if (index > 0) {
             System.out.println("Resume with a uuid '" + r.getUuid() + "' is already in the storage.");
         } else {
-            correctArrayAfterAddElement(r);
+            correctArrayAfterAddElement(r, index);
+            size++;
         }
     }
 
-    public void delete(String uuid) {
+    public final void delete(String uuid) {
         index = findIndex(uuid);
         if (index < 0) {
             System.out.println("Wrong uuid: " + uuid);
@@ -71,7 +72,7 @@ public abstract class AbstractArrayStorage implements Storage {
         storage[size] = null;
     }
 
-    protected abstract void correctArrayAfterAddElement(Resume r);
+    protected abstract void correctArrayAfterAddElement(Resume r, int index);
 
     protected abstract void correctArrayAfterDeleteElement(int index);
 }
