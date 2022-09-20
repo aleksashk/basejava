@@ -39,6 +39,21 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         storage[size] = null;
     }
 
+    @Override
+    protected void correctArrayAfterAddElement(Resume r) {
+        index = (index + 1) * (-1);
+        System.arraycopy(storage, index, storage, index + 1, size - index);
+        storage[index] = r;
+    }
+
+    @Override
+    protected void correctArrayAfterDeleteElement(int index) {
+        int deletePosition = size - index - 1;
+        if (deletePosition > 0) {
+            System.arraycopy(storage, index + 1, storage, index, deletePosition);
+        }
+    }
+
     protected int findIndex(String uuid) {
         Resume searchKey = new Resume();
         searchKey.setUuid(uuid);

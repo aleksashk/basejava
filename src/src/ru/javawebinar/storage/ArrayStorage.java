@@ -26,15 +26,13 @@ public class ArrayStorage extends AbstractArrayStorage {
         }
     }
 
-    public void delete(String uuid) {
-        index = findIndex(uuid);
-        if (index == -1) {
-            System.out.println("Wrong uuid: " + uuid);
-            return;
-        }
+    @Override
+    protected void correctArrayAfterAddElement(Resume r) {
+        storage[size] = r;
+    }
 
-        size--;
-        storage[index] = storage[size];
-        storage[size] = null;
+    @Override
+    protected void correctArrayAfterDeleteElement(int index) {
+        storage[index] = storage[size - 1];
     }
 }
