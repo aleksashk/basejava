@@ -1,5 +1,8 @@
 package src.ru.javawebinar.storage;
 
+import src.ru.javawebinar.exception.ExistStorageException;
+import src.ru.javawebinar.exception.NotExistStorageException;
+import src.ru.javawebinar.exception.StorageException;
 import src.ru.javawebinar.model.Resume;
 
 import java.util.Arrays;
@@ -15,8 +18,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public Resume get(String uuid) {
         int index = findIndex(uuid);
         if (index < 0) {
-            System.out.println("Resume " + uuid + " not exist");
-            return null;
+            throw new NotExistStorageException(uuid);
         }
         return storage[index];
     }
@@ -30,8 +32,8 @@ public abstract class AbstractArrayStorage implements Storage {
     @Override
     public void update(Resume r) {
         int index = findIndex(r.getUuid());
-        if (index < 0) {
-            System.out.println("Wrong index: " + index);
+        if (index == -1) {
+            throw new NotExistStorageException(r.getUuid());
         } else {
             storage[index] = r;
         }
@@ -50,9 +52,10 @@ public abstract class AbstractArrayStorage implements Storage {
     public final void save(Resume r) {
         index = findIndex(r.getUuid());
         if (size == STORAGE_LIMIT) {
-            System.out.println("Storage is full");
+            throw new StorageException("Storage overflow", r.getUuid());
         } else if (index > 0) {
-            System.out.println("Resume with a uuid '" + r.getUuid() + "' is already in the storage.");
+            throw new ExistStorageException(r.getUuid());
+
         } else {
             insertResume(r, index);
             size++;
@@ -62,8 +65,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public final void delete(String uuid) {
         index = findIndex(uuid);
         if (index < 0) {
-            System.out.println("Wrong uuid: " + uuid);
-            return;
+            throw new NotExistStorageException(uuid);
         }
 
         deleteResume(index);
