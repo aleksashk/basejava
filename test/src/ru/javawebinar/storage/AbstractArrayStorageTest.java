@@ -75,12 +75,12 @@ public abstract class AbstractArrayStorageTest {
 
     @Test(expected = NotExistStorageException.class)
     public void updateNotExist() {
-        storage.update(new Resume("UUID_5"));
+        storage.update(new Resume(UUID_NOT_EXIST));
     }
 
     @Test
     public void getAll() throws Exception {
-        assertArrayEquals(new Resume[]{RESUME_1, RESUME_2, RESUME_3}, storage.getAll());
+        assertSize(3);
     }
 
     private void assertSize(int size) {
@@ -96,6 +96,8 @@ public abstract class AbstractArrayStorageTest {
     public void save() throws Exception {
         storage.save(RESUME_4);
         assertArrayEquals(new Resume[]{RESUME_1, RESUME_2, RESUME_3, RESUME_4}, storage.getAll());
+        assertGet(RESUME_4);
+        assertSize(4);
     }
 
     @Test(expected = ExistStorageException.class)
@@ -103,16 +105,18 @@ public abstract class AbstractArrayStorageTest {
         storage.save(RESUME_3);
     }
 
-    //сохраняем максимально-возможное количество Resume в storage и потом пробуем добавить еще одно Resume
-    //логика реализации теста на переполнение массива (StorageException):
+    //очистили хранилищу и сохраняем максимально-возможное количество Resume в storage ,потом пробуем
+    //добавить еще одно Resume. Логика реализации теста на переполнение массива (StorageException):
     //заполняем массив, но не вызываем у него переполнение
     //если при заполнении вылетит исключение, то тест должен провалиться (используйте Assert.fail())
     //в fail() выводите сообщение о том, что переполнение произошло раньше времени
-    //тест считается успешно пройденным, когда переполнение происходит при попытке добавить в полностью заполненный массив еще одно резюме
+    //тест считается успешно пройденным, когда переполнение происходит при попытке добавить в
+    // полностью заполненный массив еще одно резюме
     @Test(expected = StorageException.class)
     public void saveWithStorageException() throws Exception {
+        clear();
         try {
-            for (int i = 4; i <= AbstractArrayStorage.STORAGE_LIMIT; i++) {
+            for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
                 storage.save(new Resume());
             }
         } catch (StorageException e) {
@@ -131,5 +135,7 @@ public abstract class AbstractArrayStorageTest {
     @Test(expected = NotExistStorageException.class)
     public void deleteNoExist() {
         storage.delete(UUID_4);
+        assertSize(3);
+        assertGet(RESUME_4);
     }
 }
