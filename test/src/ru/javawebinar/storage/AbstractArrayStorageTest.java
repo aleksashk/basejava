@@ -37,54 +37,54 @@ public abstract class AbstractArrayStorageTest {
     }
 
     @Test
-    public void testGet() throws Exception {
+    public void get() throws Exception {
         assertEquals(RESUME_1, storage.get(UUID_1));
     }
 
     @Test
-    public void testGetFail() throws Exception {
+    public void getFail() throws Exception {
         assertNotEquals(RESUME_4, storage.get(UUID_1));
     }
 
     @Test(expected = NotExistStorageException.class)
-    public void testGetNotExist() {
+    public void getNotExist() {
         storage.get("dummy");
     }
 
     @Test
-    public void testClear() throws Exception {
+    public void clear() throws Exception {
         storage.clear();
         assertEquals(0, storage.size());
     }
 
     @Test(expected = NotExistStorageException.class)
-    public void testUpdate() {
+    public void update() {
         storage.update(new Resume("UUID_4"));
     }
 
     @Test(expected = NotExistStorageException.class)
-    public void testUpdateNotExist() {
+    public void updateNotExist() {
         storage.update(new Resume("UUID_5"));
     }
 
     @Test
-    public void testGetAll() throws Exception {
+    public void getAll() throws Exception {
         assertArrayEquals(new Resume[]{RESUME_1, RESUME_2, RESUME_3}, storage.getAll());
     }
 
     @Test
-    public void testGetSize() throws Exception {
+    public void getSize() throws Exception {
         assertEquals(3, storage.size());
     }
 
     @Test
-    public void testSave() throws Exception {
+    public void save() throws Exception {
         storage.save(RESUME_4);
         assertArrayEquals(new Resume[]{RESUME_1, RESUME_2, RESUME_3, RESUME_4}, storage.getAll());
     }
 
     @Test(expected = ExistStorageException.class)
-    public void testSaveWithExistStorageException() {
+    public void saveWithExistStorageException() {
         storage.save(RESUME_3);
     }
 
@@ -95,26 +95,26 @@ public abstract class AbstractArrayStorageTest {
     //в fail() выводите сообщение о том, что переполнение произошло раньше времени
     //тест считается успешно пройденным, когда переполнение происходит при попытке добавить в полностью заполненный массив еще одно резюме
     @Test(expected = StorageException.class)
-    public void testSaveWithStorageException() throws Exception {
+    public void saveWithStorageException() throws Exception {
         try {
             for (int i = 4; i <= AbstractArrayStorage.STORAGE_LIMIT; i++) {
                 storage.save(new Resume());
             }
-        }catch (StorageException e){
+        } catch (StorageException e) {
             Assert.fail("overflow occurred ahead of time");
         }
         storage.save(new Resume());
     }
 
     @Test
-    public void testDelete() throws Exception {
+    public void delete() throws Exception {
         storage.save(RESUME_4);
         storage.delete(UUID_4);
         assertArrayEquals(new Resume[]{RESUME_1, RESUME_2, RESUME_3}, storage.getAll());
     }
 
     @Test(expected = NotExistStorageException.class)
-    public void testDeleteNoExist() {
+    public void deleteNoExist() {
         storage.delete(UUID_4);
     }
 }
