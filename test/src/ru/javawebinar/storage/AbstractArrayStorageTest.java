@@ -13,6 +13,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 public abstract class AbstractArrayStorageTest {
+    public static final String UUID_NOT_EXIST = "dummy";
     private final Storage storage;
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
@@ -38,7 +39,13 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void get() throws Exception {
-        assertEquals(RESUME_1, storage.get(UUID_1));
+        assertGet(RESUME_1);
+        assertGet(RESUME_2);
+        assertGet(RESUME_3);
+    }
+
+    private void assertGet(Resume resume) {
+        assertEquals(resume, storage.get(resume.getUuid()));
     }
 
     @Test
@@ -48,7 +55,7 @@ public abstract class AbstractArrayStorageTest {
 
     @Test(expected = NotExistStorageException.class)
     public void getNotExist() {
-        storage.get("dummy");
+        storage.get(UUID_NOT_EXIST);
     }
 
     @Test
@@ -72,8 +79,8 @@ public abstract class AbstractArrayStorageTest {
         assertArrayEquals(new Resume[]{RESUME_1, RESUME_2, RESUME_3}, storage.getAll());
     }
 
-    private void assertSize(int size){
-        assertEquals(size,storage.size());
+    private void assertSize(int size) {
+        assertEquals(size, storage.size());
     }
 
     @Test
