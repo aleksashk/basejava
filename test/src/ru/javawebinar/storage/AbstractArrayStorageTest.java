@@ -72,9 +72,13 @@ public abstract class AbstractArrayStorageTest {
         assertArrayEquals(new Resume[]{RESUME_1, RESUME_2, RESUME_3}, storage.getAll());
     }
 
+    private boolean assertSize(int size){
+        return size == storage.size();
+    }
+
     @Test
     public void getSize() throws Exception {
-        assertEquals(3, storage.size());
+        assertSize(3);
     }
 
     @Test
