@@ -11,6 +11,7 @@ import src.ru.javawebinar.model.Resume;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertSame;
 
 public abstract class AbstractArrayStorageTest {
     public static final String UUID_NOT_EXIST = "dummy";
@@ -62,11 +63,14 @@ public abstract class AbstractArrayStorageTest {
     public void clear() throws Exception {
         storage.clear();
         assertSize(0);
+        assertArrayEquals(storage.getAll(), new Resume[0]);
     }
 
     @Test(expected = NotExistStorageException.class)
     public void update() {
-        storage.update(new Resume("UUID_4"));
+        Resume newResume = new Resume("UUID_4");
+        storage.update(newResume);
+        assertSame(newResume, storage.get("UUID_4"));
     }
 
     @Test(expected = NotExistStorageException.class)
