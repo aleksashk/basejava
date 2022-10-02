@@ -61,7 +61,7 @@ public abstract class AbstractArrayStorageTest {
     @Test
     public void clear() throws Exception {
         storage.clear();
-        assertEquals(0, storage.size());
+        assertSize(0);
     }
 
     @Test(expected = NotExistStorageException.class)
