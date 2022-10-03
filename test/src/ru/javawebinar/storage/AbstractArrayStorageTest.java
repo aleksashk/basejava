@@ -81,6 +81,10 @@ public abstract class AbstractArrayStorageTest {
     @Test
     public void getAll() throws Exception {
         assertSize(3);
+        clear();
+        storage.save(RESUME_1);
+        storage.save(RESUME_2);
+        assertArrayEquals(new Resume[]{RESUME_1, RESUME_2}, storage.getAll());
     }
 
     private void assertSize(int size) {
@@ -105,7 +109,7 @@ public abstract class AbstractArrayStorageTest {
         storage.save(RESUME_3);
     }
 
-    //очистили хранилищу и сохраняем максимально-возможное количество Resume в storage ,потом пробуем
+    //Очистили хранилище и сохраняем максимально-возможное количество Resume в storage, потом пробуем
     //добавить еще одно Resume. Логика реализации теста на переполнение массива (StorageException):
     //заполняем массив, но не вызываем у него переполнение
     //если при заполнении вылетит исключение, то тест должен провалиться (используйте Assert.fail())
