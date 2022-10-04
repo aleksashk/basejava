@@ -1,5 +1,3 @@
-package src.ru.javawebinar;
-
 import src.ru.javawebinar.model.Resume;
 
 import java.util.ArrayList;
