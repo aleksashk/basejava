@@ -1,19 +1,19 @@
 package src.ru.javawebinar.storage;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import src.ru.javawebinar.exception.ExistStorageException;
 import src.ru.javawebinar.exception.NotExistStorageException;
-import src.ru.javawebinar.exception.StorageException;
 import src.ru.javawebinar.model.Resume;
+
+import java.util.Arrays;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
 public abstract class AbstractStorageTest {
-    private Storage storage;
+    protected Storage storage;
 
     public static final String UUID_NOT_EXIST = "dummy";
     private static final String UUID_1 = "uuid1";
@@ -81,7 +81,9 @@ public abstract class AbstractStorageTest {
     @Test
     public void save() throws Exception {
         storage.save(RESUME_4);
-        assertArrayEquals(new Resume[]{RESUME_1, RESUME_2, RESUME_3, RESUME_4}, storage.getAll());
+        Resume[] sortedResume = storage.getAll();
+        Arrays.sort(storage.getAll());
+        assertArrayEquals(new Resume[]{RESUME_1, RESUME_2, RESUME_3, RESUME_4}, sortedResume);
         assertGet(RESUME_4);
         assertSize(4);
     }
@@ -89,25 +91,6 @@ public abstract class AbstractStorageTest {
     @Test(expected = ExistStorageException.class)
     public void saveExist() throws Exception {
         storage.save(RESUME_1);
-    }
-
-    //Очистили хранилище и сохраняем максимально-возможное количество Resume в storage, потом пробуем
-    //добавить еще одно Resume. Логика реализации теста на переполнение массива (StorageException):
-    //заполняем массив, но не вызываем у него переполнение
-    //если при заполнении вылетит исключение, то тест должен провалиться (используйте Assert.fail())
-    //в fail() выводите сообщение о том, что переполнение произошло раньше времени
-    //тест считается успешно пройденным, когда переполнение происходит при попытке добавить в
-    // полностью заполненный массив еще одно резюме
-    @Test(expected = StorageException.class)
-    public void saveWithStorageException() throws Exception {
-        try {
-            for (int i = 4; i <= AbstractArrayStorage.STORAGE_LIMIT; i++) {
-                storage.save(new Resume());
-            }
-        } catch (StorageException e) {
-            Assert.fail();
-        }
-        storage.save(new Resume());
     }
 
     @Test(expected = NotExistStorageException.class)
