@@ -51,7 +51,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean exist(Object index) {
+    protected boolean isExist(Object index) {
         return (Integer) index >= 0;
     }
 
