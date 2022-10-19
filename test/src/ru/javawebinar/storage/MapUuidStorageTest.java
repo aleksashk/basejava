@@ -7,13 +7,13 @@ import java.util.Arrays;
 
 import static org.junit.Assert.assertArrayEquals;
 
-public class MapStorageTest extends AbstractStorageTest {
+public class MapUuidStorageTest extends AbstractStorageTest {
 
     private static final Resume RESUME_1 = new Resume("uuid_1");
     private static final Resume RESUME_2 = new Resume("uuid_2");
 
-    public MapStorageTest() {
-        super(new MapStorage());
+    public MapUuidStorageTest() {
+        super(new MapUuidStorage());
     }
 
     @Test

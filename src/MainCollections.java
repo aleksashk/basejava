@@ -43,6 +43,7 @@ public class MainCollections {
         }
         System.out.println(collection.toString());
 
+
         Map<String, Resume> map = new HashMap<>();
         map.put(UUID_1, RESUME_1);
         map.put(UUID_2, RESUME_2);

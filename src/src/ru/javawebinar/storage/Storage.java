@@ -3,6 +3,7 @@ package src.ru.javawebinar.storage;
 import src.ru.javawebinar.model.Resume;
 
 public interface Storage {
+
     void clear();
 
     void update(Resume r);
