@@ -4,6 +4,10 @@ import src.ru.javawebinar.exception.ExistStorageException;
 import src.ru.javawebinar.exception.NotExistStorageException;
 import src.ru.javawebinar.model.Resume;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 public abstract class AbstractStorage implements Storage {
 
     protected abstract Object getSearchKey(String uuid);
@@ -53,4 +57,13 @@ public abstract class AbstractStorage implements Storage {
         }
         return searchKey;
     }
+
+    @Override
+    public List<Resume> getAllSorted() {
+        List<Resume> list = getResumeList();
+        Collections.sort(list,Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid));
+        return list;
+    }
+
+    protected abstract List<Resume> getResumeList();
 }

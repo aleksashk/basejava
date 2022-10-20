@@ -19,15 +19,15 @@ public abstract class AbstractArrayStorageTest extends AbstractStorageTest{
     //тест считается успешно пройденным, когда переполнение происходит при попытке добавить в
     // полностью заполненный массив еще одно резюме
     @Test(expected = StorageException.class)
-    public void saveWithStorageException() throws Exception {
+    public void saveOverflow() throws Exception {
         clear();
         try {
             for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
-                storage.save(new Resume());
+                storage.save(new Resume("Resume1"));
             }
         } catch (StorageException e) {
             Assert.fail();
         }
-        storage.save(new Resume());
+        storage.save(new Resume("Resume1"));
     }
 }
